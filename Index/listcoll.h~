@@ -1,0 +1,28 @@
+#ifndef LISTCOLL_H
+#define LISTCOLL_H
+#endif
+
+
+/* Object for 
+ *
+ */
+struct indexObj {
+  char* word;
+  FileIndexListPtr file_list;
+  indexObj *next;
+
+};
+
+typedef struct indexObj IndexObjPtr;
+
+/*
+ * Data Strucuture to handle collision in a linked list enviroment
+ * Structure in this case is NOT generic, and is made for the context of 
+ * handling word:document frequency
+ */
+
+struct LinkedList {
+  
+  
+
+};
