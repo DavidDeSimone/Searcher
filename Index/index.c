@@ -1,4 +1,6 @@
 #define _XOPEN_SOURCE 500
+#define NO_WRITE "no_file_write_XCAD"
+
 #include <stdio.h>
 #include <dirent.h>
 #include <sys/stat.h>
@@ -57,7 +59,12 @@ void checkContents(char *to_read, char *to_write) {
       readFile(to_read, to_read);
   }
 
-  writeFile(to_write);
+
+
+
+  if(strcmp(to_write, NO_WRITE) != 0) {
+    writeFile(to_write);
+  }
 }
 
 /* Function used to determine if a pathname is a directory
