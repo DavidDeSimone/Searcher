@@ -1,6 +1,3 @@
-//TODO Make index.c function calls take list parameter, so list isnt a global
-//in index.c
-
 #include "search.h"
 
 #define NO_WRITE "no_file_write_XCAD"
@@ -38,38 +35,93 @@ void list_dec(LinkedIndexObjList *list) {
   free(list);
 }
 
-char** sa(str_arr to_find) {
+char** sa(LinkedIndexObjListPtr list, str_arr to_find) {
   //TODO
   return NULL;
 }
 
-char** so(str_arr to_find) {
+char** so(LinkedIndexObjListPtr list, str_arr to_find) {
   //TODO
   return NULL;
 }
 
 void printr(str_arr to_print) {
-  int i;
-  
-  for(i = 0; i < to_print->size; i++) {
-    printf("Result: %s\n", to_print->strs[i]);
+  str_link link = str_arr->front;
+
+  while(link != NULL) {
+    printf("%s\n", link->str);
+    link = link->next;
   }
 
 }
 
 void decr(str_arr to_free) {
-  int i;
+  str_link = to_free->front;
 
-  for(i = 0; i < to_free->size; i++) {
-    free(to_free->strs[i]);
+  while(str_link != NULL) {
+    free(str_link->str);
+
+    str_link = str_link->next;
+    free(link);
   }
 
   free(to_free);
 }
 
 str_arr peel(char *input) {
-  //TODO
-  return NULL;
+  str_arr list = create_str_arr();
+  const char splits[2] = " ";
+  char *token;
+
+  /*Tokenize the String*/
+  token = strtok(input, splits);
+
+  
+  /*For each token*/
+  while(token != NULL) {
+    /*Create a String Object */
+    char *tk = malloc(len(token) * sizeof(char) + 1);
+    strncpy(tk, token, len(token));
+
+    str_link link = create_str_link(tk);
+
+    /*Add it to the linked list*/
+    add_str(list, link);
+    token = strtok(NULL, splits);
+  }
+
+
+  return list;
+}
+
+void addStr(str_arr list, str_link link) {
+  if(list->front == NULL) {
+    list->front = link;
+    list->size = 1;
+    return;
+  }
+
+  /*List is non-empty, insert to front */
+  link->next = list->front;
+  list->front = link;
+  list->size += 1;
+}
+
+str_arr create_str_arr() {
+  str_arr ret = malloc(sizeof(struct str_arr_t));
+  ret->front = NULL;
+  ret->size = 0;
+
+  return ret;
+}
+
+str_link create_str_link(char *str) {
+  /* String must be allocated before call */
+  str_link link = malloc(sizeof(struct str_link_t));
+  link->str = str;
+  link->next = NULL;
+
+  return link;
 }
 
 int main(int argc. char **args) {
@@ -96,19 +148,17 @@ int main(int argc. char **args) {
     char *comm = to_find->strs[0];
 
     if(strcmp(comm, "sa") == 0) {
-      results = sa(to_find);
+      results = sa(list, to_find);
       printr(results);
       decr(results);
     } else
       if(strcmp(comm, "so") == 0) {
-	results = so(to_find);
+	results = so(list, to_find);
 	printr(results);
 	decr(results);
       } else {
 	printf("Error, invalid command!\n");
       }
-
-
 
   }
 

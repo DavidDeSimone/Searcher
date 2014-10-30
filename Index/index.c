@@ -12,9 +12,6 @@
 #include "index.h"
 #define FILE_NOT_FOUND -2
 
-
-LinkedIndexObjListPtr list;
-
 int main(int argc, char **args) {
   int err = 0;
   char *to_write;
@@ -34,7 +31,7 @@ int main(int argc, char **args) {
   //Initalize LinkedObjList structure
   list = create();
 
-  checkContents(to_read, to_write);
+  checkContents(list, to_read, to_write);
 
   free(to_write);
   free(to_read);
@@ -44,11 +41,11 @@ int main(int argc, char **args) {
 /* Checks the file to read. Calls appropriate function  
  * based on function content
  */
-void checkContents(char *to_read, char *to_write) {
+void checkContents(LinkedIndexObjListPtr list,  char *to_read, char *to_write) {
  
   if(isDir(to_read) == 1) {
     printf("Reading Dir %s\n", to_read);
-    readDir(to_read);
+    readDir(list, to_read);
   } else 
     if(isDir(to_read) == FILE_NOT_FOUND) {
 
@@ -56,14 +53,14 @@ void checkContents(char *to_read, char *to_write) {
       return;
 
     } else {
-      readFile(to_read, to_read);
+      readFile(list, to_read, to_read);
   }
 
 
 
 
   if(strcmp(to_write, NO_WRITE) != 0) {
-    writeFile(to_write);
+    writeFile(file, to_write);
   }
 }
 
@@ -110,7 +107,7 @@ char* apdir(char *base, char *to_append) {
  * readFile(). If another directory is found, recursivly calls
  * readDir(). 
  */
-void readDir(char *to_read) {
+void readDir(LinkedIndexObjListPtr list, char *to_read) {
 
   //Read directory
   DIR *dir;
@@ -134,10 +131,10 @@ void readDir(char *to_read) {
 	path = apdir(to_read, dent->d_name);
       if(isDir(path)) {
 	printf("Reading directory %s\n", path);
-	readDir(path);
+	readDir(list, path);
       } else {
 	printf("Reading file %s\n", path);
-	readFile(path, dent->d_name);
+	readFile(list, path, dent->d_name);
       }
 
 
@@ -169,7 +166,7 @@ char* toLower(char *str) {
  * and hashes it. If a collision occures, occurrence will be raised by collision
  * object. Adds hashmap into hashmap array upon complition. 
  */
-void readFile(char *to_read, char *d_name) {
+void readFile(LinkedIndexObjListPtr list, char *to_read, char *d_name) {
   FILE *fp;
 
   //Read in the file
@@ -218,7 +215,7 @@ void readFile(char *to_read, char *d_name) {
 
 
 
-void writeFile(char *to_write) {
+void writeFile(LinkedIndexObjListPtr list, char *to_write) {
   // printls(list);
   
   //If the file is not found already on disk
