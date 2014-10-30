@@ -19,7 +19,6 @@ LinkedIndexObjListPtr list_init(char *file_name);
  */
 void list_dec(LinkedIndexObjList *list);
 
-
 /* Search for files containing the given term. A query may contain
  * one or more terms. The search term will output the names of the files 
  * that contain ALL of the terms in the query

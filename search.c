@@ -4,6 +4,7 @@
 #include "search.h"
 
 #define NO_WRITE "no_file_write_XCAD"
+#define MAX_INPUT 250
 
 #ifndef TRUE
 #define TRUE 1
@@ -17,7 +18,23 @@ LinkedIndexObjListPtr list_init(char *file_name) {
 }
 
 void list_dec(LinkedIndexObjList *list) {
-  //TODO, Free list members
+  FileIndexPtr f_front;
+  IndexObjPtr i_front;
+
+  i_front = list->front;
+
+  while(i_front != NULL) {
+    f_front = i_front->file_list->front;
+
+    while(f_front != NULL) {
+      f_front = f_front->next;
+      free(f_front);
+    }
+
+    i_front = i_front->next;
+    free(i_front);
+  }
+
   free(list);
 }
 
@@ -59,7 +76,7 @@ int main(int argc. char **args) {
   ListIndexObjListPtr list;  
   str_arr to_find;
   str_arr results;
-  char *input = malloc(sizeof(char) * 50);
+  char *input = malloc(sizeof(char) * MAX_INPUT);
 
   if(argc != 2) {
     printf("Invalid number of command line arguments!\n");
