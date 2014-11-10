@@ -1,20 +1,31 @@
+#ifndef SEACH_H
+#define SEARCH_H
+
 #include <stdio.h>
 #include <string.h>
 #include "Index/index.h"
+#include "Index/listcoll.h"
 
-struct str_link_t {
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+#define NO_WRITE "no_file_write_XCAD"
+#define MAX_INPUT_S 250
+
+struct str_link_s {
   char *str;
-  str_link next;
+  struct str_link_s *next;
 };
 
-typedef str_link_t* str_link;
+typedef struct str_link_s* str_link;
 
-struct str_arr_t {
+struct str_arr_s {
   str_link front;
   size_t size;
 };
 
-typedef struct str_arr_t* str_arr;
+typedef struct str_arr_s* str_arr;
 
 /* Constructor for Object that maintains word frequencies indexed by document
  * See Index/index.h for more details
@@ -24,7 +35,7 @@ LinkedIndexObjListPtr list_init(char *file_name);
 /* Destructor for LinkedIndexObjList
  * Call when list should be freed
  */
-void list_dec(LinkedIndexObjList *list);
+void list_dec(LinkedIndexObjListPtr list);
 
 /* Search for files containing the given term. A query may contain
  * one or more terms. The search term will output the names of the files 
@@ -64,3 +75,12 @@ str_arr create_str_arr();
  * String Linked List object
  */
 str_link create_str_link(char *str);
+
+/* Searched for the given string str in the
+ * linked list to_find. Returns 1 if to_find contains
+ * str, 0 otherwise
+ */
+int contains_str(str_arr to_find, char *str);
+
+
+#endif

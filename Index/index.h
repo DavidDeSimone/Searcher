@@ -1,6 +1,14 @@
 #ifndef INDEX_H
 #define INDEX_H
-#endif
+
+#include <stdio.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ftw.h>
+#include <unistd.h>
+#include "listcoll.h"
 
 void checkContents(LinkedIndexObjListPtr list, char *to_read, char *to_write);
 int isDir(char *to_read);
@@ -12,3 +20,5 @@ char* apdir(char *base, char* to_append);
 void writeList(LinkedIndexObjListPtr list, char *fp);
 int rmrf(char *path);
 int unc(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf);
+
+#endif

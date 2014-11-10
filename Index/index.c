@@ -1,21 +1,14 @@
 #define _XOPEN_SOURCE 500
 #define NO_WRITE "no_file_write_XCAD"
 
-#include <stdio.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ftw.h>
-#include <unistd.h>
-#include "listcoll.h"
 #include "index.h"
 #define FILE_NOT_FOUND -2
 
-int main(int argc, char **args) {
+/*int main(int argc, char **args) {
   int err = 0;
   char *to_write;
   char *to_read;
+  LinkedIndexObjListPtr list;
 
   if(argc != 3) {
     printf("Error, incorrect number of command line arguments!\n");
@@ -36,7 +29,7 @@ int main(int argc, char **args) {
   free(to_write);
   free(to_read);
   return 0;
-}
+  }*/
 
 /* Checks the file to read. Calls appropriate function  
  * based on function content
@@ -60,7 +53,7 @@ void checkContents(LinkedIndexObjListPtr list,  char *to_read, char *to_write) {
 
 
   if(strcmp(to_write, NO_WRITE) != 0) {
-    writeFile(file, to_write);
+    writeFile(list, to_write);
   }
 }
 

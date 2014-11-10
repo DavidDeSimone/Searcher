@@ -1,6 +1,5 @@
 #ifndef LISTCOLL_H
 #define LISTCOLL_H
-#endif
 
 /*
  * Object used for counting frequency for a word in a document
@@ -68,3 +67,5 @@ IndexObjPtr create_index(char *name, char *filename);
 FileIndexListPtr create_file_index_list();
 FileIndexPtr create_file_index(char *file_name);
 void printls(LinkedIndexObjListPtr ls);
+
+#endif
