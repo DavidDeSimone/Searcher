@@ -1,3 +1,9 @@
+/* Search Utility built by David DeSimone
+ * Function documentation found in header file
+ *
+ */
+
+
 #include "search.h"
 
 LinkedIndexObjListPtr list_init(char *file_name) {
@@ -118,39 +124,11 @@ str_arr so(LinkedIndexObjListPtr list, str_arr to_find) {
 str_arr get_common(str_arr first_list, str_arr second_list) {
   str_arr to_return = create_str_arr();
 
-  //If both lists are empty, return NULL
+  //If either lists is empty, return NULL
   if(first_list->front == NULL || second_list->front == NULL) {
     return NULL;
   }
-  /*
-  //if just the first list is empty, return a copy of the second list
-  if(first_list->front == NULL) {
-    str_link front = second_list->front;
 
-    while(front != NULL) {
-      str_link to_add = create_str_link(front->str);
-      add_str(to_return, to_add);
-
-      front = front->next;
-    }
-
-    return to_return;
-  }
-
-  //If just the second list is empty, return a copy of the first list
-  if(second_list->front == NULL) {
-    str_link front = first_list->front;
-
-    while(front != NULL) {
-      str_link to_add = create_str_link(front->str);
-      add_str(to_return, to_add);
-
-      front = front->next;
-    }
-
-    return to_return;
-  }
-  */
   //Iterate over the first list
   str_link first_front = first_list->front;
   
@@ -160,6 +138,7 @@ str_arr get_common(str_arr first_list, str_arr second_list) {
     str_link second_front = second_list->front;
     //Iterate over the second list
     while(second_front != NULL) {
+
       //If any items match, add a copy to the return list
       if(strcmp(first_front->str, second_front->str) == 0) {
 	str_link to_add = create_str_link(first_front->str);
@@ -168,15 +147,12 @@ str_arr get_common(str_arr first_list, str_arr second_list) {
 	second_front = second_front->next;
       }
 
-
-
       first_front = first_front->next;
     }
-  
-
-
   }
 
+  //If the lists have no items in common
+  //Return NULL
   if(to_return->front == NULL) {
     return NULL;
   }
