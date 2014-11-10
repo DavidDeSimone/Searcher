@@ -29,8 +29,57 @@ void list_dec(LinkedIndexObjListPtr list) {
 }
 
 str_arr sa(LinkedIndexObjListPtr list, str_arr to_find) {
-  //TODO
-  return NULL;
+  str_arr return_list = create_str_arr();
+
+  IndexObjPtr front = list->front;
+
+  //Iterate over the words
+  while(front != NULL) {
+    
+    //If the current item is a word we are looking for
+    if(contains_str(to_find, front->word)) {
+      //if return list is empty
+      //Initalize it with every item
+      //in the current files index
+      if(return_list->front == NULL) {
+	FileIndexPtr file = front->file_list->front;
+	while(file != NULL) {
+	  str_link link = create_str_link(file->file_name);
+	  add_str(return_list, link);
+
+	  file = file->next;
+
+	}
+
+
+
+      } else {
+      //Remove items from return list
+      //if they are not in the current
+      //items file index
+	str_arr diff_list = create_str_arr();
+
+	FileIndexPtr file = front->file_list->front;
+	while(file != NULL) {
+	  str_link link = create_str_link(file->file_name);
+	  add_str(diff_list, link);
+
+	  file = file->next;
+	}
+
+	str_arr returned = get_common(diff_list, return_list);
+	free(return_list);
+	return_list = returned;
+
+
+      }
+    }
+
+
+  }
+
+
+  return return_list;
 }
 
 str_arr so(LinkedIndexObjListPtr list, str_arr to_find) {
@@ -60,7 +109,14 @@ str_arr so(LinkedIndexObjListPtr list, str_arr to_find) {
   return return_list;
 }
 
+str_arr get_common(str_arr first_list, str_arr second_list) {
+  //TODO
+  return NULL;
+}
+
 void printr(str_arr to_print) {
+  printf("Printing Output List:\n");
+
   str_link link = to_print->front;
 
   while(link != NULL) {
@@ -85,24 +141,26 @@ void decr(str_arr to_free) {
 
 str_arr peel(char *input) {
   str_arr list = create_str_arr();
-  const char splits[2] = " ";
   char *token;
 
   /*Tokenize the String*/
-  token = strtok(input, splits);
+  token = strtok(input, " \n");
 
   
   /*For each token*/
   while(token != NULL) {
+    printf("Token %s, size %d\n", token, strlen(token));
     /*Create a String Object */
-    char *tk = malloc(strlen(token) * sizeof(char) + 1);
-    strncpy(tk, token, strlen(token));
+    char *tk = malloc((strlen(token) * sizeof(char)) + 1);
+    strcpy(tk, token);
 
     str_link link = create_str_link(tk);
 
     /*Add it to the linked list*/
     add_str(list, link);
-    token = strtok(NULL, splits);
+    printf("Added Token: %s\n", tk);
+
+    token = strtok(NULL, " \n");
   }
 
 
@@ -154,6 +212,28 @@ int contains_str(str_arr to_find, char *str) {
 }
 
 
+char* get_command(str_arr to_get) {
+
+  if(to_get == NULL) {
+    return NULL;
+  }
+
+  str_link front = to_get->front;
+
+  while(front != NULL) {
+
+    //The last item in the linked list is 
+    //the command we are interested in
+    if(front->next == NULL) {
+      return front->str;
+    }
+
+    front = front->next;
+  }
+
+  return NULL;
+}
+
 int main(int argc, char **args) {
   LinkedIndexObjListPtr list;  
   str_arr to_find;
@@ -168,15 +248,16 @@ int main(int argc, char **args) {
   list = list_init(args[1]);
 
   while(TRUE) {
-    scanf("%s", input);
+    fgets(input, MAX_INPUT_S, stdin);
 
     /* Tokenize input based on space seperator
      * First token should be the command so or sa
      */
     to_find = peel(input);
     
-    char *comm = to_find->front->str;
+    char *comm = get_command(to_find);
 
+    printf("Testing Command: %s\n", comm); 
     if(strcmp(comm, "sa") == 0) {
       results = sa(list, to_find);
       printr(results);
@@ -186,13 +267,21 @@ int main(int argc, char **args) {
 	results = so(list, to_find);
 	printr(results);
 	decr(results);
-      } else {
+      }
+        if(strcmp(comm "q") == 0) {
+	  //End the program
+	  decr(to_find);
+	  break;
+
+         } else {
 	printf("Error, invalid command!\n");
       }
 
+    decr(to_find);
+
   }
 
-  
+  free(input);
   list_dec(list);
   return 0;
 }
