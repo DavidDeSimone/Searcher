@@ -2,9 +2,12 @@
 #define NO_WRITE "no_file_write_XCAD"
 
 #include "index.h"
+#include <ftw.h>
 #define FILE_NOT_FOUND -2
 
-/*int main(int argc, char **args) {
+
+#ifdef MAIN_EN
+int main(int argc, char **args) {
   int err = 0;
   char *to_write;
   char *to_read;
@@ -29,7 +32,9 @@
   free(to_write);
   free(to_read);
   return 0;
-  }*/
+  }
+
+#endif
 
 /* Checks the file to read. Calls appropriate function  
  * based on function content
@@ -42,7 +47,7 @@ void checkContents(LinkedIndexObjListPtr list,  char *to_read, char *to_write) {
   } else 
     if(isDir(to_read) == FILE_NOT_FOUND) {
 
-      printf("File Not Found");
+      printf("File Not Found\n");
       return;
 
     } else {
@@ -238,7 +243,7 @@ void writeFile(LinkedIndexObjListPtr list, char *to_write) {
 	}
 
       } else {
-	int status = remove(to_write);
+	remove(to_write);
 	writeList(list, to_write);
       }
 

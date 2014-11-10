@@ -1,6 +1,8 @@
 #ifndef INDEX_H
 #define INDEX_H
 
+#define _XOPEN_SOURCE 500
+
 #include <stdio.h>
 #include <dirent.h>
 #include <sys/stat.h>
@@ -8,6 +10,7 @@
 #include <string.h>
 #include <ftw.h>
 #include <unistd.h>
+#include <ctype.h>
 #include "listcoll.h"
 
 void checkContents(LinkedIndexObjListPtr list, char *to_read, char *to_write);

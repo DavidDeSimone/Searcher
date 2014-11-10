@@ -3,7 +3,6 @@
  *
  */
 
-
 #include "search.h"
 
 LinkedIndexObjListPtr list_init(char *file_name) {
@@ -197,7 +196,9 @@ str_arr peel(char *input) {
   
   /*For each token*/
   while(token != NULL) {
-    printf("Token %s, size %d\n", token, strlen(token));
+
+    printf("Token %s, size %zd\n", token, strlen(token));
+
     /*Create a String Object */
     char *tk = malloc((strlen(token) * sizeof(char)) + 1);
     strcpy(tk, token);
@@ -298,6 +299,12 @@ int main(int argc, char **args) {
 
   list = list_init(args[1]);
 
+  if(list->front == NULL) {
+    printf("Error, List not correctly formed. Are you sure the you typed the file path correctly?\n");
+    return -2;
+  }
+
+
   while(TRUE) {
     fgets(input, MAX_INPUT_S, stdin);
 
@@ -307,6 +314,10 @@ int main(int argc, char **args) {
     to_find = peel(input);
     
     char *comm = get_command(to_find);
+
+    if(comm == NULL) {
+      printf("No Command Entered\n");
+    } else {
 
     printf("Testing Command: %s\n", comm); 
     if(strcmp(comm, "sa") == 0) {
@@ -328,6 +339,7 @@ int main(int argc, char **args) {
 	printf("Error, invalid command!\n");
       }
 
+    }
   }
 
   free(input);

@@ -1,6 +1,8 @@
 #ifndef SEACH_H
 #define SEARCH_H
 
+#define _XOPEN_SOURCE 500
+
 #include <stdio.h>
 #include <string.h>
 #include "Index/index.h"
