@@ -82,5 +82,11 @@ str_link create_str_link(char *str);
  */
 int contains_str(str_arr to_find, char *str);
 
+/* Returns a Linked List containing all the elements
+ * the first and second list have in common
+ * If the lists have nothing in common, returns NULL
+ */
+str_arr get_common(str_arr first_list, str_arr second_list);
+
 
 #endif

@@ -71,11 +71,17 @@ str_arr sa(LinkedIndexObjListPtr list, str_arr to_find) {
 	free(return_list);
 	return_list = returned;
 
+	//Lists have nothing in common
+	//Return Null
+	if(return_list == NULL) {
+	  return NULL;
+	}
+
 
       }
     }
 
-
+    front = front->next;
   }
 
 
@@ -110,8 +116,73 @@ str_arr so(LinkedIndexObjListPtr list, str_arr to_find) {
 }
 
 str_arr get_common(str_arr first_list, str_arr second_list) {
-  //TODO
-  return NULL;
+  str_arr to_return = create_str_arr();
+
+  //If both lists are empty, return NULL
+  if(first_list->front == NULL || second_list->front == NULL) {
+    return NULL;
+  }
+  /*
+  //if just the first list is empty, return a copy of the second list
+  if(first_list->front == NULL) {
+    str_link front = second_list->front;
+
+    while(front != NULL) {
+      str_link to_add = create_str_link(front->str);
+      add_str(to_return, to_add);
+
+      front = front->next;
+    }
+
+    return to_return;
+  }
+
+  //If just the second list is empty, return a copy of the first list
+  if(second_list->front == NULL) {
+    str_link front = first_list->front;
+
+    while(front != NULL) {
+      str_link to_add = create_str_link(front->str);
+      add_str(to_return, to_add);
+
+      front = front->next;
+    }
+
+    return to_return;
+  }
+  */
+  //Iterate over the first list
+  str_link first_front = first_list->front;
+  
+  while(first_front != NULL) {
+
+
+    str_link second_front = second_list->front;
+    //Iterate over the second list
+    while(second_front != NULL) {
+      //If any items match, add a copy to the return list
+      if(strcmp(first_front->str, second_front->str) == 0) {
+	str_link to_add = create_str_link(first_front->str);
+	add_str(to_return, to_add);
+
+	second_front = second_front->next;
+      }
+
+
+
+      first_front = first_front->next;
+    }
+  
+
+
+  }
+
+  if(to_return->front == NULL) {
+    return NULL;
+  }
+
+
+  return to_return;
 }
 
 void printr(str_arr to_print) {
@@ -132,8 +203,9 @@ void decr(str_arr to_free) {
   while(free_link != NULL) {
     free(free_link->str);
 
-    free_link = free_link->next;
+    str_link tmp = free_link->next;
     free(free_link);
+    free_link = tmp;
   }
 
   free(to_free);
@@ -189,9 +261,12 @@ str_arr create_str_arr() {
 }
 
 str_link create_str_link(char *str) {
-  /* String must be allocated before call */
   str_link link = malloc(sizeof(struct str_link_s));
-  link->str = str;
+  char *cpy = malloc((sizeof(char) * strlen(str)) + 1);
+
+  strcpy(cpy, str);
+
+  link->str = cpy;
   link->next = NULL;
 
   return link;
@@ -267,8 +342,8 @@ int main(int argc, char **args) {
 	results = so(list, to_find);
 	printr(results);
 	decr(results);
-      }
-        if(strcmp(comm "q") == 0) {
+      } else
+	if(strcmp(comm, "q") == 0) {
 	  //End the program
 	  decr(to_find);
 	  break;
@@ -276,8 +351,6 @@ int main(int argc, char **args) {
          } else {
 	printf("Error, invalid command!\n");
       }
-
-    decr(to_find);
 
   }
 
