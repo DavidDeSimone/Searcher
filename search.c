@@ -4,7 +4,7 @@
  */
 
 #include "search.h"
-
+#define DEBUG 1
 LinkedIndexObjListPtr list_init(char *file_name) {
   LinkedIndexObjListPtr list = create();
   //checkContents(list, file_name, "output.txt");
@@ -19,7 +19,7 @@ LinkedIndexObjListPtr list_init(char *file_name) {
 
 void readListFromDisk(LinkedIndexObjListPtr list, char *file_name) {
   FILE* to_open;
-  char *line = malloc(10000 * sizeof(char));
+  char *line;
   size_t len = 0;
   int read;
  
@@ -56,13 +56,12 @@ void readListFromDisk(LinkedIndexObjListPtr list, char *file_name) {
 
 	char *second_line;
 
-	read = getline(&second_line, &len, to_open);
-	if((read = getline(&second_line, &len, to_open)) != -1) {
+	while((read = getline(&second_line, &len, to_open)) != -1 && strcmp("</list>\n", second_line) != 0) {
 	
 	  #ifdef DEBUG
 	  printf("Second Line: %s\n", second_line);
 	  #endif
-
+	  if(strcmp("\n", second_line) != 0) {
 	  char *token2 = strtok(second_line, " \n");
 
 	  while(token2 != NULL) {
@@ -83,17 +82,17 @@ void readListFromDisk(LinkedIndexObjListPtr list, char *file_name) {
 	    token2 = strtok(NULL, " \n");
 	    token2 = strtok(NULL, " \n");
 	  }
-	  
-	} else {
+	  }  
+	} /*else {
 	  printf("Malformed File\n");
 	  return;
-	}
+	}*/
 
 	
 	insert_index(list, to_add);
 
-
-      }
+	
+	}
 
       token = strtok(NULL, " \n");
     }
