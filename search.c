@@ -269,6 +269,11 @@ str_arr get_common(str_arr first_list, str_arr second_list) {
 
 void printr(str_arr to_print) {
   printf("Printing Output List:\n");
+  if(to_print == NULL) {
+    printf("List is Empty, no files found\n");
+    return;
+  }
+
 
   str_link link = to_print->front;
 
@@ -285,6 +290,10 @@ void printr(str_arr to_print) {
 }
 
 void decr(str_arr to_free) {
+  if(to_free == NULL) {
+    return;
+  }
+
   str_link free_link = to_free->front;
 
   while(free_link != NULL) {

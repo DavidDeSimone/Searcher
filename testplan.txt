@@ -1,0 +1,43 @@
+Test Plan for Assignment 4:
+     Generate Test File from Index for directory /test_files/
+
+     0. Print list be defining DEBUG in code (will call debug print statements
+        to be called, including print list function)
+
+     Enter Queries
+     
+     1. Base Case, so single word
+     	Input: so hello
+	Expected Output: test_files/test-1/test1.txt
+
+     2. so two words with nothing in common
+     	so hello and
+	Expected Output: test_files/test-1/test3.txt
+		 	 test_files/test-1/test1.txt
+
+     3. so no words 
+     	Input: so
+	Expected Output: <Empty List>
+
+     4. so two words with files in common
+     	Input: so hello world
+	Expected Output: test_files/test-1/test2.txt
+		 	 test_files/test-1/test3.txt
+			 test_files/test-1/test1.txt
+
+     5. sa no words
+     	Input: sa
+	Expected Output: <Empty List>
+
+     6. sa two words with nothing in common
+        Input: sa hello and
+	Expected Output: <Empty List>
+
+     7. sa above case with words reversed
+     	Input: sa and hello
+	Expected Output: <Empty List>
+
+     8. sa words with only 1 file in common
+     	Input: sa hello world
+	Expected Output: test_files/test-1/test1.txt
+      
