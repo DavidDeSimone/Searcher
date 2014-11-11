@@ -7,10 +7,97 @@
 
 LinkedIndexObjListPtr list_init(char *file_name) {
   LinkedIndexObjListPtr list = create();
-  checkContents(list, file_name, NO_WRITE);
+  //checkContents(list, file_name, "output.txt");
+  readListFromDisk(list, file_name);
+
+  #ifdef DEBUG
+  printls(list);
+  #endif
 
   return list;
 }
+
+void readListFromDisk(LinkedIndexObjListPtr list, char *file_name) {
+  FILE* to_open;
+  char *line;
+  size_t len = 0;
+  int read;
+ 
+  //Variable used in logic checking for malformed File
+  //int open_tag = 0;
+
+  to_open = fopen(file_name, "r");
+
+  if(to_open == NULL) {
+    printf("File not found!\n");
+    return;
+  }
+
+  while((read = getline(&line, &len, to_open)) != -1) {
+
+    printf("%s\n", line);
+    //If the tag is closed
+    
+      //tokenize the line, get the second token
+    char *token = strtok(line, " \n");
+     
+    while(token != NULL) {
+      if(strcmp("<list>", token) != 0 && strcmp("</list>", token) != 0) {
+	IndexObjPtr to_add = create_index(token, file_name);
+	to_add->file_list = create_file_index_list();
+
+	char *second_line;
+
+	read = getline(&second_line, &len, to_open);
+	if((read = getline(&second_line, &len, to_open)) != -1) {
+	  printf("Second Line: %s\n", second_line);
+	  char *token2 = strtok(second_line, " \n");
+
+	  while(token2 != NULL) {
+	    printf("Second Token: %s\n", token2);
+	    
+
+
+	    addFileIndex(to_add->file_list, token2);
+
+	    token2 = strtok(NULL, " \n");
+	    token2 = strtok(NULL, " \n");
+	  }
+	  
+
+
+
+	} else {
+	  printf("Malformed File\n");
+	  return;
+	}
+
+
+	add(list, to_add);
+	
+
+      }
+      token = strtok(NULL, " \n");
+    }
+    
+
+      //Add to list
+
+      //get the next line, add every other token to list
+      //As sub items of the above
+
+      //close tag
+    
+
+  }
+
+  
+
+
+
+
+}
+
 
 void list_dec(LinkedIndexObjListPtr list) {
   FileIndexPtr f_front;
@@ -165,6 +252,11 @@ void printr(str_arr to_print) {
 
   str_link link = to_print->front;
 
+  if(link == NULL) {
+    printf("List is empty, no files found\n");
+    return;
+  }
+
   while(link != NULL) {
     printf("%s\n", link->str);
     link = link->next;
@@ -197,7 +289,9 @@ str_arr peel(char *input) {
   /*For each token*/
   while(token != NULL) {
 
+    #ifdef DEBUG
     printf("Token %s, size %zd\n", token, strlen(token));
+    #endif
 
     /*Create a String Object */
     char *tk = malloc((strlen(token) * sizeof(char)) + 1);
@@ -207,7 +301,10 @@ str_arr peel(char *input) {
 
     /*Add it to the linked list*/
     add_str(list, link);
+
+    #ifdef DEBUG
     printf("Added Token: %s\n", tk);
+    #endif
 
     token = strtok(NULL, " \n");
   }
@@ -319,7 +416,8 @@ int main(int argc, char **args) {
       printf("No Command Entered\n");
     } else {
 
-    printf("Testing Command: %s\n", comm); 
+    
+    printf("Executing Command: %s\n", comm); 
     if(strcmp(comm, "sa") == 0) {
       results = sa(list, to_find);
       printr(results);

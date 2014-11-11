@@ -1,10 +1,12 @@
 #ifndef SEACH_H
 #define SEARCH_H
 
+#define _GNU_SOURCE
 #define _XOPEN_SOURCE 500
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "Index/index.h"
 #include "Index/listcoll.h"
 
@@ -90,5 +92,6 @@ int contains_str(str_arr to_find, char *str);
  */
 str_arr get_common(str_arr first_list, str_arr second_list);
 
+void readListFromDisk(LinkedIndexObjListPtr list, char *file_name);
 
 #endif
