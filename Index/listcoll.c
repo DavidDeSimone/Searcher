@@ -13,7 +13,6 @@ LinkedIndexObjListPtr create() {
 }
 
 void add(LinkedIndexObjListPtr list_ptr, IndexObjPtr obj_toadd) {
-  
 
   if(obj_toadd->file_list == NULL) {
     /*As this is a new entry, create the file list object */
@@ -243,5 +242,18 @@ void printls(LinkedIndexObjListPtr ls) {
 
   } while((curr = curr->next) != NULL);
 
+
+}
+
+void insert_index(LinkedIndexObjListPtr list, IndexObjPtr to_add) {
+
+  if(list->front == NULL) {
+    list->front = to_add;
+  } else {
+    to_add->next = list->front;
+    list->front = to_add;
+  }
+
+  
 
 }

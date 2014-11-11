@@ -67,5 +67,6 @@ IndexObjPtr create_index(char *name, char *filename);
 FileIndexListPtr create_file_index_list();
 FileIndexPtr create_file_index(char *file_name);
 void printls(LinkedIndexObjListPtr ls);
+void insert_index(LinkedIndexObjListPtr list, IndexObjPtr to_add);
 
 #endif

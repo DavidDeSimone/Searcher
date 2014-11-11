@@ -10,16 +10,16 @@ LinkedIndexObjListPtr list_init(char *file_name) {
   //checkContents(list, file_name, "output.txt");
   readListFromDisk(list, file_name);
 
-  #ifdef DEBUG
+#ifdef DEBUG
   printls(list);
-  #endif
+#endif
 
   return list;
 }
 
 void readListFromDisk(LinkedIndexObjListPtr list, char *file_name) {
   FILE* to_open;
-  char *line;
+  char *line = malloc(10000 * sizeof(char));
   size_t len = 0;
   int read;
  
@@ -35,66 +35,70 @@ void readListFromDisk(LinkedIndexObjListPtr list, char *file_name) {
 
   while((read = getline(&line, &len, to_open)) != -1) {
 
+    #ifdef DEBUG
     printf("%s\n", line);
     //If the tag is closed
-    
+    #endif
       //tokenize the line, get the second token
     char *token = strtok(line, " \n");
      
     while(token != NULL) {
-      if(strcmp("<list>", token) != 0 && strcmp("</list>", token) != 0) {
-	IndexObjPtr to_add = create_index(token, file_name);
+      if(strcmp("<list>", token) != 0 && strcmp("</list>", token) != 0 && strlen(token) > 0) {
+
+	char buff[strlen(token) + 1];
+	strcpy(buff, token);
+
+	char *tok_add = malloc((strlen(buff) + 1) * sizeof(char));
+	strcpy(tok_add, buff);
+
+	IndexObjPtr to_add = create_index(tok_add, "");
 	to_add->file_list = create_file_index_list();
 
 	char *second_line;
 
 	read = getline(&second_line, &len, to_open);
 	if((read = getline(&second_line, &len, to_open)) != -1) {
+	
+	  #ifdef DEBUG
 	  printf("Second Line: %s\n", second_line);
+	  #endif
+
 	  char *token2 = strtok(second_line, " \n");
 
 	  while(token2 != NULL) {
+	    #ifdef DEBUG
 	    printf("Second Token: %s\n", token2);
-	    
+	    #endif
 
+	    if(strlen(token2) > 0) {
+	      char buff2[strlen(token2) + 1];
+	      strcpy(buff2, token2);
+	      
+	      char *tok2_add = malloc((strlen(buff2) + 1) * sizeof(char));
+	      strcpy(tok2_add, buff2);
 
-	    addFileIndex(to_add->file_list, token2);
+	    addFileIndex(to_add->file_list, tok2_add);
 
+	    }
 	    token2 = strtok(NULL, " \n");
 	    token2 = strtok(NULL, " \n");
 	  }
 	  
-
-
-
 	} else {
 	  printf("Malformed File\n");
 	  return;
 	}
 
-
-	add(list, to_add);
 	
+	insert_index(list, to_add);
+
 
       }
+
       token = strtok(NULL, " \n");
     }
     
-
-      //Add to list
-
-      //get the next line, add every other token to list
-      //As sub items of the above
-
-      //close tag
-    
-
   }
-
-  
-
-
-
 
 }
 
@@ -159,6 +163,21 @@ str_arr sa(LinkedIndexObjListPtr list, str_arr to_find) {
 	  file = file->next;
 	}
 
+	#ifdef DEBUG
+	str_link it = diff_list->front;
+	while(it != NULL) {
+
+	  printf("Diff: %s\n", it->str);
+	  it = it->next;
+	}
+
+	it = return_list->front;
+	while(it != NULL) {
+	  printf("Ret: %s\n", it->str);
+	  it = it->next;
+	}
+	#endif
+
 	str_arr returned = get_common(diff_list, return_list);
 	free(return_list);
 	return_list = returned;
@@ -193,7 +212,9 @@ str_arr so(LinkedIndexObjListPtr list, str_arr to_find) {
 	FileIndexPtr file = front->file_list->front;
 	while(file != NULL) {
 	  str_link link = create_str_link(file->file_name);
-	  add_str(return_list, link);
+	  if(!contains_str(return_list, link->str)) {
+	    add_str(return_list, link);
+	  }
 
 	  file = file->next;
 	}
@@ -230,11 +251,10 @@ str_arr get_common(str_arr first_list, str_arr second_list) {
 	str_link to_add = create_str_link(first_front->str);
 	add_str(to_return, to_add);
 
-	second_front = second_front->next;
       }
-
-      first_front = first_front->next;
+      second_front = second_front->next;
     }
+    first_front = first_front->next;
   }
 
   //If the lists have no items in common
@@ -336,7 +356,7 @@ str_arr create_str_arr() {
 
 str_link create_str_link(char *str) {
   str_link link = malloc(sizeof(struct str_link_s));
-  char *cpy = malloc((sizeof(char) * strlen(str)) + 1);
+  char *cpy = malloc((strlen(str) + 1) * sizeof(char));
 
   strcpy(cpy, str);
 
