@@ -8,7 +8,7 @@
 
 #ifdef MAIN_EN
 int main(int argc, char **args) {
-  int err = 0;
+  //int err = 0;
   char *to_write;
   char *to_read;
   LinkedIndexObjListPtr list;

@@ -2,9 +2,10 @@ CC = gcc
 CFLAGS = -g -Wall
 LFLAGS = -L.
 
-OBJFILES = index.o search.o liblist.o
+OBJFILES = index.o search.o liblist.o parser.o
 OUTPUT = search
-all: $(OUTPUT)
+SUBAPPS = indexer
+all: $(OUTPUT) $(SUBAPPS)
 
 $(OUTPUT): $(OBJFILES)
 	$(CC) $(CFLAGS) $(OBJFILES) $(LFLAGS) -o $(OUTPUT) 
@@ -23,6 +24,10 @@ index.o: Index/index.c
 
 index_main.o: Index/index_main.c
 	$(CC) $(CFLAGS) $(LFLAGS) -c Index/index_main.c -o index_main.o
+
+parser.o: parser.c
+	$(CC) $(CFLAGS) $(LFLAGS) -c parser.c -o parser.o
+
 
 
 

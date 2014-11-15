@@ -1,4 +1,4 @@
-#ifndef SEACH_H
+#ifndef SEARCH_H
 #define SEARCH_H
 
 #define _GNU_SOURCE
@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include "Index/index.h"
 #include "Index/listcoll.h"
+#include "parser.h"
 
 #ifndef TRUE
 #define TRUE 1

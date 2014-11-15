@@ -1,0 +1,7 @@
+#ifndef PARSE_S_H
+#define PARSE_S_H
+
+
+LinkedIndexObjListPtr readld(char *file_name);
+
+#endif

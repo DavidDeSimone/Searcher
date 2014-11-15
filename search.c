@@ -5,10 +5,12 @@
 
 #include "search.h"
 #define DEBUG 1
+
 LinkedIndexObjListPtr list_init(char *file_name) {
-  LinkedIndexObjListPtr list = create();
-  //checkContents(list, file_name, "output.txt");
-  readListFromDisk(list, file_name);
+  //LinkedIndexObjListPtr list = create();
+  //checkContents(list, file_name, "output2.txt");
+  //readListFromDisk(list, file_name);
+  LinkedIndexObjListPtr list = readld(file_name);
 
 #ifdef DEBUG
   printls(list);
@@ -92,7 +94,7 @@ void readListFromDisk(LinkedIndexObjListPtr list, char *file_name) {
 	insert_index(list, to_add);
 
 	
-	}
+      }
 
       token = strtok(NULL, " \n");
     }
