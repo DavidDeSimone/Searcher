@@ -1,8 +1,13 @@
 Test Plan for Assignment 4:
      Generate Test File from Index for directory /test_files/
+     ./indexer output.txt test_files
 
      0. Print list be defining DEBUG in code (will call debug print statements
         to be called, including print list function)
+
+     ./search output.txt
+     Expected Output: <Sucessful Read, information can be read further
+      if debugging define is enabled>
 
      Enter Queries
      

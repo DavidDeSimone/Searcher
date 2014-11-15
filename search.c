@@ -101,6 +101,8 @@ void readListFromDisk(LinkedIndexObjListPtr list, char *file_name) {
     
   }
 
+
+  fclose(to_open);
 }
 
 

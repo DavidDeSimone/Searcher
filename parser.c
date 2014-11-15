@@ -1,10 +1,12 @@
+#define _GNU_SOURCE
+
 #include "parser.h"
 
 LinkedIndexObjListPtr readld(char *file_name) {
   FILE *to_open;
   char *line;
   size_t len = 0;
-  short read;
+  int read;
 
   LinkedIndexObjListPtr list = create();
 
@@ -36,7 +38,7 @@ LinkedIndexObjListPtr readld(char *file_name) {
 	IndexObjPtr to_add = create_index(tok_a, NO_FILE);
 	to_add->file_list = create_file_index_list();
 
-	char *second_line;
+	char *second_line = NULL;
 
 	/*After we see a <list> tag, we read in each line until we see a </list> tag */
 	while((read = getline(&second_line, &len, to_open)) != -1 && strcmp("</list>\n", second_line) != 0) {
@@ -80,5 +82,6 @@ LinkedIndexObjListPtr readld(char *file_name) {
     }
   }	      	      
 
+  fclose(to_open);
   return list;
 }
